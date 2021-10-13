@@ -6,6 +6,7 @@ namespace PragParking
     {
         static bool varRunApplication = true;
         static string[] P_Garage = new string[11];
+        static int P_Slot;
         static void Main(string[] args)
         {
             Initialize();
@@ -34,7 +35,7 @@ namespace PragParking
         {
             while (varRunApplication)
             {
-                TestSwitch1();
+                StartMenu();
             }
             Console.WriteLine("Exit Aplication\nPress any key to close");
             Console.ReadKey();
@@ -44,17 +45,17 @@ namespace PragParking
             varRunApplication = false;
         }
 
-        private static void TestSwitch1()
+        private static void StartMenu()
         {
             Console.Clear();
 
             int userInput;
-            TestTextMenu1();
+            TextStartMenu();
             bool isValid = int.TryParse(Console.ReadLine(), out userInput);
             switch (userInput)
             {
                 case 1:
-                    TestSwitch2();
+                    ParkVehicle();
                     break;
                 case 2:
                     CloseApplication();
@@ -66,12 +67,12 @@ namespace PragParking
                     break;
             }
         }
-        private static void TestSwitch2()
+        private static void ParkVehicle()
         {
             Console.Clear();
 
             int switchInput;
-            TestTextMenu2();
+            TextParkVehicle();
             bool isValid = int.TryParse(Console.ReadLine(), out switchInput);
             switch (switchInput)
             {
@@ -82,13 +83,13 @@ namespace PragParking
                     ShowP_Garage();
                     break;
                 case 3:
-                    TestSwitch1();
+                    StartMenu();
                     break;
                 default:
                     Console.WriteLine("Enter valid number!");
                     Console.WriteLine("Press any button to continue (2)");
                     Console.ReadKey();
-                    TestSwitch2();
+                    ParkVehicle();
                     break;
             }
         }
@@ -107,7 +108,7 @@ namespace PragParking
                     Console.ReadKey();
                     break;
                 case 2:
-                    TestSwitch2();
+                    ParkVehicle();
                     break;
                 case 3:
                     CloseApplication();
@@ -123,21 +124,23 @@ namespace PragParking
         #endregion
 
         #region UserInterface
-        private static void TestTextMenu1()
+        private static void TextStartMenu()
         {
-            Console.Write("1.Switch1:\n2.Close Application\n");
+            Console.Write("1.Park vihecle:\n2.Close Application\n");
         }
 
-        private static void TestTextMenu2()
+        private static void TextParkVehicle()
         {
-            Console.Write("1.Switch2\n2.Show all vihecles\n3.Back\n");
+            Console.Write("1.Park CAR\n2.Park MC\n3.Back\n");
         }
 
         private static void TestTextMenu3()
         {
-            Console.Write("1.Switch3\n2.Back\n3.Close Application");
+            Console.Write("1.Park Car\n2.Back\n3.Close Application");
         }
         #endregion
+
+
 
         private static void ShowP_Garage()
         {
@@ -147,5 +150,9 @@ namespace PragParking
             }
             Console.ReadKey();
         }
+
+        #region MyRegion
+
+        #endregion
     }
 }
