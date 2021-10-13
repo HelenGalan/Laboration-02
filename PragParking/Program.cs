@@ -8,12 +8,8 @@ namespace PragParking
         static string[] P_Garage = new string[11];
         static void Main(string[] args)
         {
-<<<<<<< Updated upstream
-            Console.WriteLine("Här började Prag Parking");
-=======
             Initialize();
             Console.WriteLine("Här började Prag Parking....");
->>>>>>> Stashed changes
             RunApplication();
         }
         #region Initialize
