@@ -6,8 +6,10 @@ namespace PragParking
     {
         static bool varRunApplication = true;
         static string[] P_Garage = new string[11];
+        static int P_Slot;
         static void Main(string[] args)
         {
+            Initialize();
             Console.WriteLine("Här började Prag Parking");
             RunApplication();
         }
@@ -57,6 +59,9 @@ namespace PragParking
                     break;
                 case 2:
                     CloseApplication();
+                    break;
+                case 3:
+                    ShowP_Garage();
                     break;
                 default:
                     Console.WriteLine("Enter valid number!");
@@ -124,27 +129,21 @@ namespace PragParking
         #region UserInterface
         private static void TextStartMenu()
         {
-            Console.Write("Welcome to Parking in Prag!" +
-                "\nPress 1 if you want to park your vehicle" +
-                "\nPress 2 if you want to close application");
+
         }
 
         private static void TextParkVehicle()
         {
-            Console.Write("Press 1 to park a car" +
-                "\nPress 2 to park a motorcicle" +
-                "\nPress 3 back to the main menu\n");
+
         }
 
         private static void TestTextMenu3()
         {
-            Console.Write("Press 1 to confirm the parking" +
-                "\nPress 2 move the vehicle" +
-                "\nPress 3 remove the vehicle" +
-                "\nPress 4 to back to the previous menu" +
-                "\nPress 5 to close the application");
+
         }
         #endregion
+
+
 
         private static void ShowP_Garage()
         {
@@ -154,5 +153,9 @@ namespace PragParking
             }
             Console.ReadKey();
         }
+
+        #region MyRegion
+
+        #endregion
     }
 }
