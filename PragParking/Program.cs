@@ -126,17 +126,17 @@ namespace PragParking
         #region UserInterface
         private static void TextStartMenu()
         {
-            Console.Write("1.Park vihecle:\n2.Close Application\n");
+
         }
 
         private static void TextParkVehicle()
         {
-            Console.Write("1.Park CAR\n2.Park MC\n3.Back\n");
+
         }
 
         private static void TestTextMenu3()
         {
-            Console.Write("1.Park Car\n2.Back\n3.Close Application");
+
         }
         #endregion
 
