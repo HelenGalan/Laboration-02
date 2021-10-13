@@ -149,7 +149,6 @@ namespace PragParking
                         "\nPress 3 remove the vehicle" +
                         "\nPress 4 to back to the previous menu" +
                         "\nPress 5 to close the application");
-
         }
         #endregion
 
