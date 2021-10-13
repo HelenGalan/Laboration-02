@@ -129,7 +129,7 @@ namespace PragParking
         #region UserInterface
         private static void TextStartMenu()
         {
-
+            Console.WriteLine("Welcome!");
         }
 
         private static void TextParkVehicle()
