@@ -139,7 +139,8 @@ namespace PragParking
 
         private static void TestTextMenu3()
         {
-            Console.Write("Press 1 to Switch3" +
+            Console.Write("Press 1 to confirm the parking" +
+                "\nPress 2 move the vehicle" +
                 "\nPress 2 to back to the previous menu" +
                 "\nPress 3 to close the application");
         }
