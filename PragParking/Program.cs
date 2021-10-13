@@ -129,20 +129,26 @@ namespace PragParking
         #region UserInterface
         private static void TextStartMenu()
         {
-
+            Console.WriteLine("Welcome!");
         }
 
         private static void TextParkVehicle()
         {
 
+            Console.Write("Press 1 to park a car" +
+                        "\nPress 2 to park a motorcicle" +
+                        "\nPress 3 back to the main menu\n");
+
         }
 
         private static void TestTextMenu3()
         {
+
             Console.Write("Press 1 to confirm the parking" +
-                "\nPress 2 move the vehicle" +
-                "\nPress 2 to back to the previous menu" +
-                "\nPress 3 to close the application");
+                        "\nPress 2 move the vehicle" +
+                        "\nPress 3 remove the vehicle" +
+                        "\nPress 4 to back to the previous menu" +
+                        "\nPress 5 to close the application");
         }
         #endregion
 
