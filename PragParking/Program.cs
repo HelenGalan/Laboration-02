@@ -60,6 +60,9 @@ namespace PragParking
                 case 2:
                     CloseApplication();
                     break;
+                case 3:
+                    ShowP_Garage();
+                    break;
                 default:
                     Console.WriteLine("Enter valid number!");
                     Console.WriteLine("Press any button to continue (1)");
