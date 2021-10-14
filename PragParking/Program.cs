@@ -11,53 +11,13 @@ namespace PragParking
         static string ParkedVehicles;
         static char vehicleType;
         static int P_Slot;
+        static int userInput;
         const int regLength = 10;
         static void Main(string[] args)
         {
             Initialize();
-            CanParkVehicle();
-
             RunApplication();
-
-            RunApplication();
-
-            ChooseVehicleType();
-
-            ChooseRegistration();
-
-            Occupied();
-
-            
         }
-
-        static void ChooseVehicleType()
-        {
-            TextVehicleType();
-            bool isCharValid = char.TryParse(Console.ReadLine().ToUpper(), out vehicleType);            
-        }
-
-        static void ChooseRegistration()
-        {
-            TextRegistrationNumber();
-            registrationNumber = Console.ReadLine().ToUpper();
-        }
-
-        static void Occupied()
-        {
-            TextWherePark();
-            bool isIntValid = int.TryParse(Console.ReadLine(), out P_Slot);
-            if (CheckSpace(vehicleType, P_Slot))
-            {
-                ParkVehicle(vehicleType, registrationNumber, P_Slot);
-            }
-            else
-            {
-                TextOccupied();
-            }
-            TextAnyKey();
-            Console.ReadKey();
-        }
-        
 
         #region Initialize
         static void Initialize()
@@ -103,45 +63,24 @@ namespace PragParking
                 case 1:
                     ParkVehicle();
                     break;
-                case 2:                    
+                case 2:
+                    ShowGarage();
                     break;
                 case 3:
                     MoveVehicle();
                     break;
                 case 4:
-                    ShowAvailableP_slots();
-                    break;
-                case 5:
                     CloseApplication();
                     break;
                 default:
-                    DefaultOption();                   
+                    DefaultOption();
                     break;
             }
         }
         private static void ParkVehicle()
         {
             Console.Clear();
-
-            int switchInput;
-            TextParkVehicle();
-            bool isValid = int.TryParse(Console.ReadLine(), out switchInput);
-            switch (switchInput)
-            {
-                case 1:
-                    TestSwitch3();
-                    break;
-                case 2:
-                    ShowAllParkedVehicle();
-                    break;
-                case 3:
-                    StartMenu();
-                    break;
-                default:
-                    DefaultOption();                 
-                    ParkVehicle();
-                    break;
-            }
+            CanParkVehicle();
         }
 
         private static void TestSwitch3()
@@ -164,7 +103,7 @@ namespace PragParking
                     CloseApplication();
                     break;
                 default:
-                    DefaultOption();                    
+                    DefaultOption();
                     TestSwitch3();
                     break;
             }
@@ -181,7 +120,7 @@ namespace PragParking
             switch (switchInput)
             {
                 case 1:
-
+                    SearchVehicle();
                     break;
                 case 2:
                     StartMenu();
@@ -190,7 +129,7 @@ namespace PragParking
                     CloseApplication();
                     break;
                 default:
-                    DefaultOption();                    
+                    DefaultOption();
                     TestSwitch3();
                     break;
             }
@@ -325,7 +264,7 @@ namespace PragParking
             {
                 return false;
             }
-            
+
             if (vehicleType == 'C')
             {
                 P_Garage[parkingSpot] = vehicleType + "#" + regNumber;
@@ -363,7 +302,7 @@ namespace PragParking
                     {
                         Console.WriteLine("Where should you park");
                         bool isIntValid = int.TryParse(Console.ReadLine(), out P_Slot);
-                        if (CheckSpace(vehicleType, P_Slot))
+                        if (isIntValid && CheckSpace(vehicleType, P_Slot))
                         {
                             ParkVehicle(vehicleType, registrationNumber, P_Slot);
                             loopPark = false;
@@ -390,5 +329,63 @@ namespace PragParking
             }
         }
 
+        public static void SearchVehicle()
+        {
+            bool searchLoop = true;
+            while (searchLoop)
+            {
+                Console.Clear();
+
+                Console.WriteLine("Enter reg number");
+                registrationNumber = Console.ReadLine().ToUpper();
+
+                if (SearchRegNumber(registrationNumber, out P_Slot))
+                {
+                    Console.WriteLine("Found");
+                    searchLoop = false;
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("Not found");
+
+                    Console.WriteLine("1.Try one more time\n2.Back");
+                    bool isInputValid = int.TryParse(Console.ReadLine(), out userInput);
+                    if (isInputValid)
+                    {
+                        if (userInput == 1)
+                        {
+
+                        }
+                        else if (userInput == 2)
+                        {
+                            searchLoop = false;
+                        }
+                    }
+                    
+                }
+            }
+        }
+
+        public static void ShowGarage()
+        {
+            Console.Clear();
+
+            int switchInput;
+            // Text for option to vehicle
+            Console.WriteLine("1.Show all vehicle\n2.Show all available spot");
+            bool isValid = int.TryParse(Console.ReadLine(), out switchInput);
+            switch (switchInput)
+            {
+                case 1:
+                    ShowAllParkedVehicle();
+                    break;
+                case 2:
+                    ShowAvailableP_slots();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
