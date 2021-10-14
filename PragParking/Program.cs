@@ -15,50 +15,10 @@ namespace PragParking
         static void Main(string[] args)
         {
             Initialize();
-            CanParkVehicle();
-
-            RunApplication();
-
-            RunApplication();
-
-            ChooseVehicleType();
-
-            ChooseRegistration();
-
-            Occupied();
-
-            
+            RunApplication();                        
         }
 
-        static void ChooseVehicleType()
-        {
-            TextVehicleType();
-            bool isCharValid = char.TryParse(Console.ReadLine().ToUpper(), out vehicleType);            
-        }
-
-        static void ChooseRegistration()
-        {
-            TextRegistrationNumber();
-            registrationNumber = Console.ReadLine().ToUpper();
-        }
-
-        static void Occupied()
-        {
-            TextWherePark();
-            bool isIntValid = int.TryParse(Console.ReadLine(), out P_Slot);
-            if (CheckSpace(vehicleType, P_Slot))
-            {
-                ParkVehicle(vehicleType, registrationNumber, P_Slot);
-            }
-            else
-            {
-                TextOccupied();
-            }
-            TextAnyKey();
-            Console.ReadKey();
-        }
         
-
         #region Initialize
         static void Initialize()
         {
@@ -103,17 +63,15 @@ namespace PragParking
                 case 1:
                     ParkVehicle();
                     break;
-                case 2:                    
+                case 2: 
+                    
                     break;
                 case 3:
                     MoveVehicle();
                     break;
                 case 4:
-                    ShowAvailableP_slots();
-                    break;
-                case 5:
                     CloseApplication();
-                    break;
+                    break;               
                 default:
                     DefaultOption();                   
                     break;
@@ -209,9 +167,11 @@ namespace PragParking
         private static void TextStartMenu()
         {
             Console.WriteLine("Welcome to park in PRAG!" +
+                              "\n" +
                               "\nPress 1 to park your vehicle" +
-                              "\nPress 2 to show available spots" +
-                              "\nPress 3 to exit the system");
+                              "\nPress 2 to show all spots" +
+                              "\nPress 3 to move your vehicle" +
+                              "\nPress 4 to exit the system");
         }
 
         private static void TextParkVehicle()
@@ -235,7 +195,8 @@ namespace PragParking
 
         private static void TextVehicleType()
         {
-            Console.WriteLine("Enter the vehicle type");
+            Console.WriteLine("Please, e" +
+                "nter the vehicle type");
         }
 
         private static void TextRegistrationNumber()
@@ -246,15 +207,23 @@ namespace PragParking
         {
             Console.WriteLine("Where should you park it?");
         }
-
         private static void TextAnyKey()
         {
             Console.WriteLine("Press any key to continue");
         }
-
         private static void TextOccupied()
         {
             Console.WriteLine("This spot is taken/occupied!");
+        }
+        private static void TextInvalidType()
+        {
+            Console.WriteLine("The type is invalid" +
+                "\n Please enter a valid type");
+        }
+        private static void TextToLongRegistration()
+        {
+            Console.WriteLine("The registration number is too long" +
+                "\nPlease, it has to be maximun 10 characteres");
         }
 
         #endregion
@@ -283,7 +252,7 @@ namespace PragParking
                     Console.WriteLine($"Parking slot {i} is available");
                 }
             }
-            Console.WriteLine("Enter any key to continue");
+            TextAnyKey();
             Console.ReadKey();
         }
 
@@ -352,16 +321,16 @@ namespace PragParking
             {
                 Console.Clear();
 
-                Console.WriteLine("Enter vehicle type");
+                TextVehicleType();
                 bool isCharValid = char.TryParse(Console.ReadLine().ToUpper(), out vehicleType);
                 if (isCharValid && vehicleType == 'C' || vehicleType == 'M')
                 {
-                    Console.WriteLine("Enter reg number");
+                    TextRegistrationNumber();
                     registrationNumber = Console.ReadLine().ToUpper();
 
                     if (registrationNumber.Length <= regLength)
                     {
-                        Console.WriteLine("Where should you park");
+                        TextWherePark();
                         bool isIntValid = int.TryParse(Console.ReadLine(), out P_Slot);
                         if (CheckSpace(vehicleType, P_Slot))
                         {
@@ -370,21 +339,21 @@ namespace PragParking
                         }
                         else
                         {
-                            Console.WriteLine("Occupied");
+                            TextOccupied();
                         }
                     }
                     else
                     {
-                        Console.WriteLine("To long regnumber max 10 char...");
+                        TextToLongRegistration();
                         Console.ReadKey();
                     }
-                    Console.WriteLine("Press any key to continue");
+                    TextAnyKey();
                     Console.ReadKey();
                 }
                 else
                 {
-                    Console.WriteLine("Invailed typ");
-                    Console.WriteLine("Press any key to continue");
+                    TextInvalidType();
+                    TextAnyKey();
                     Console.ReadKey();
                 }
             }
