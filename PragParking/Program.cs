@@ -6,10 +6,36 @@ namespace PragParking
     {
         static bool varRunApplication = true;
         static string[] P_Garage = new string[11];
+        static string registrationNumber;
+        static string availableP_slot;
+        static string ParkedVehicles;
+        static char vehicleType;
         static int P_Slot;
         static void Main(string[] args)
         {
             Initialize();
+
+            Console.WriteLine("Enter vehicle type");
+            bool isCharValid = char.TryParse(Console.ReadLine().ToUpper(), out vehicleType);
+            Console.WriteLine("Enter reg number");
+            registrationNumber = Console.ReadLine().ToUpper();
+
+            Console.WriteLine("Where should you park");
+            bool isIntValid = int.TryParse(Console.ReadLine(), out P_Slot);
+            if (CheckSpace(vehicleType, P_Slot))
+            {
+                ParkVehicle(vehicleType, registrationNumber, P_Slot);
+            }
+            else
+            {
+                Console.WriteLine("Occupied");
+            }
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+
+
+
+
             RunApplication();
         }
         #region Initialize
@@ -57,9 +83,15 @@ namespace PragParking
                     ParkVehicle();
                     break;
                 case 2:
-                    ShowP_Garage();
+                    
                     break;
                 case 3:
+                    MoveVehicle();
+                    break;
+                case 4:
+                    ShowAvailableP_slots();
+                    break;
+                case 5:
                     CloseApplication();
                     break;
                 default:
@@ -82,7 +114,7 @@ namespace PragParking
                     TestSwitch3();
                     break;
                 case 2:
-                    ShowP_Garage();
+                    ShowAllParkedVehicle();
                     break;
                 case 3:
                     StartMenu();
@@ -123,6 +155,35 @@ namespace PragParking
                     break;
             }
         }
+
+        private static void MoveVehicle()
+        {
+            Console.Clear();
+
+            int switchInput;
+            // Text for option to vehicle
+            Console.WriteLine("1.Search for vehicle to move\n2.Back\n3.Close Application");
+            bool isValid = int.TryParse(Console.ReadLine(), out switchInput);
+            switch (switchInput)
+            {
+                case 1:
+
+                    break;
+                case 2:
+                    StartMenu();
+                    break;
+                case 3:
+                    CloseApplication();
+                    break;
+                default:
+                    Console.WriteLine("Enter valid number!");
+                    Console.WriteLine("Press any button to continue (2)");
+                    Console.ReadKey();
+                    TestSwitch3();
+                    break;
+            }
+        }
+
         #endregion
 
         #region UserInterface
@@ -155,14 +216,95 @@ namespace PragParking
         #endregion
 
 
-
-        private static void ShowP_Garage()
+        private static void ShowAllParkedVehicle()
         {
-            foreach (var vihecles in P_Garage)
+            for (int i = 1; i < P_Garage.Length; i++)
             {
-                Console.WriteLine(vihecles);
+
+                ParkedVehicles = P_Garage[i];
+                if (ParkedVehicles == "")
+                {
+
+                }
+                else
+                {
+                    Console.WriteLine(ParkedVehicles);
+                }
+
             }
             Console.ReadKey();
+        }
+        private static void ShowAvailableP_slots()
+        {
+            for (int i = 1; i < P_Garage.Length; i++)
+            {
+                availableP_slot = P_Garage[i];
+
+                if (availableP_slot == "")
+                {
+                    Console.WriteLine($"Parking slot {i} is available");
+                }
+            }
+            Console.WriteLine("Enter any key to continue");
+            Console.ReadKey();
+        }
+
+        public static bool SearchRegNumber(string regNumber, out int parkingSpot)
+        {
+            for (int i = 1; i < P_Garage.Length; i++)
+            {
+                // Se om vårt regnummer finns i ruta nummer i
+                if (P_Garage[i]?.IndexOf(regNumber) > 0)   // "?" kollar om null
+                {
+                    parkingSpot = i;
+                    return true;
+                }
+            }
+            // Vi har sökt igenom hela Phuset, men regnumret fanna ingenstans
+            parkingSpot = -1;
+            return false;
+        }
+
+        public static bool CheckSpace(char vehicleType, int parkingSpot)
+        {
+            string pPlats = P_Garage[parkingSpot];
+
+            // Kolla om ett fordon av goven typ ryms i en given p-plats
+            if (pPlats == "")
+            {
+                return true;
+            }
+            if (pPlats.Contains("M#") && !pPlats.Contains("|") && vehicleType == 'M')
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool ParkVehicle(char vehicleType, string regNumber, int parkingSpot)
+        {
+            if (!CheckSpace(vehicleType, parkingSpot))
+            {
+                return false;
+            }
+
+            if (vehicleType == 'C')
+            {
+                P_Garage[parkingSpot] = vehicleType + "#" + regNumber;
+            }
+            if (vehicleType == 'M')
+            {
+                if (P_Garage[parkingSpot] == "")
+                {
+                    P_Garage[parkingSpot] = vehicleType + "#" + regNumber;
+                }
+                else
+                {
+                    P_Garage[parkingSpot] += "|" + vehicleType + "#" + regNumber;
+                }
+            }
+
+            return true;
         }
 
         #region MyRegion
