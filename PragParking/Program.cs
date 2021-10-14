@@ -306,7 +306,7 @@ namespace PragParking
                     }
                     else
                     {
-                        Console.WriteLine("To long regnumber max 10 char");
+                        Console.WriteLine("To long regnumber max 10 char...");
                         Console.ReadKey();
                     }
                     Console.WriteLine("Press any key to continue");
