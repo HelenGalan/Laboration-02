@@ -15,12 +15,32 @@ namespace PragParking
         {
             Initialize();
 
-            Console.WriteLine("Enter vehicle type");
-            bool isCharValid = char.TryParse(Console.ReadLine().ToUpper(), out vehicleType);
-            Console.WriteLine("Enter reg number");
-            registrationNumber = Console.ReadLine().ToUpper();
+            RunApplication();
 
-            Console.WriteLine("Where should you park");
+            ChooseVehicleType();
+
+            ChooseRegistration();
+
+            Occupied();
+
+            
+        }
+
+        static void ChooseVehicleType()
+        {
+            TextVehicleType();
+            bool isCharValid = char.TryParse(Console.ReadLine().ToUpper(), out vehicleType);            
+        }
+
+        static void ChooseRegistration()
+        {
+            TextRegistrationNumber();
+            registrationNumber = Console.ReadLine().ToUpper();
+        }
+
+        static void Occupied()
+        {
+            TextWherePark();
             bool isIntValid = int.TryParse(Console.ReadLine(), out P_Slot);
             if (CheckSpace(vehicleType, P_Slot))
             {
@@ -28,16 +48,13 @@ namespace PragParking
             }
             else
             {
-                Console.WriteLine("Occupied");
+                TextOccupied();
             }
-            Console.WriteLine("Press any key to continue");
+            TextAnyKey();
             Console.ReadKey();
-
-
-
-
-            RunApplication();
         }
+        
+
         #region Initialize
         static void Initialize()
         {
@@ -82,8 +99,7 @@ namespace PragParking
                 case 1:
                     ParkVehicle();
                     break;
-                case 2:
-                    
+                case 2:                    
                     break;
                 case 3:
                     MoveVehicle();
@@ -95,9 +111,7 @@ namespace PragParking
                     CloseApplication();
                     break;
                 default:
-                    Console.WriteLine("Please, enter a valid number!");
-                    Console.WriteLine("Press any button to continue (1)");
-                    Console.ReadKey();
+                    DefaultOption();                   
                     break;
             }
         }
@@ -120,9 +134,7 @@ namespace PragParking
                     StartMenu();
                     break;
                 default:
-                    Console.WriteLine("Enter valid number!");
-                    Console.WriteLine("Press any button to continue (2)");
-                    Console.ReadKey();
+                    DefaultOption();                 
                     ParkVehicle();
                     break;
             }
@@ -148,9 +160,7 @@ namespace PragParking
                     CloseApplication();
                     break;
                 default:
-                    Console.WriteLine("Please, enter a valid number!");
-                    Console.WriteLine("Press any button to continue (2)");
-                    Console.ReadKey();
+                    DefaultOption();                    
                     TestSwitch3();
                     break;
             }
@@ -176,9 +186,7 @@ namespace PragParking
                     CloseApplication();
                     break;
                 default:
-                    Console.WriteLine("Enter valid number!");
-                    Console.WriteLine("Press any button to continue (2)");
-                    Console.ReadKey();
+                    DefaultOption();                    
                     TestSwitch3();
                     break;
             }
@@ -187,6 +195,13 @@ namespace PragParking
         #endregion
 
         #region UserInterface
+
+        private static void DefaultOption()
+        {
+            Console.WriteLine("Please, enter a valid number!");
+            Console.WriteLine("Press any button to continue (2)");
+            Console.ReadKey();
+        }
         private static void TextStartMenu()
         {
             Console.WriteLine("Welcome to park in PRAG!" +
@@ -200,7 +215,7 @@ namespace PragParking
 
             Console.Write("Press number 1 to park a car" +
                         "\nPress number 2 to park a motorcicle" +
-                        "\nPress number 3 back to the main menu\n");
+                        "\nPress number 3 to back to the main menu\n");
 
         }
 
@@ -213,6 +228,31 @@ namespace PragParking
                         "\nPress number 4 to back to the previous menu" +
                         "\nPress number 5 to close the application");
         }
+
+        private static void TextVehicleType()
+        {
+            Console.WriteLine("Enter the vehicle type");
+        }
+
+        private static void TextRegistrationNumber()
+        {
+            Console.WriteLine("Please, enter the registration number");
+        }
+        private static void TextWherePark()
+        {
+            Console.WriteLine("Where should you park it?");
+        }
+
+        private static void TextAnyKey()
+        {
+            Console.WriteLine("Press any key to continue");
+        }
+
+        private static void TextOccupied()
+        {
+            Console.WriteLine("This spot is taken/occupied!");
+        }
+
         #endregion
 
 
