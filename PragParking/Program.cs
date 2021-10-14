@@ -10,7 +10,6 @@ namespace PragParking
         static void Main(string[] args)
         {
             Initialize();
-            Console.WriteLine("Här började Prag Parking");
             RunApplication();
         }
         #region Initialize
@@ -58,13 +57,13 @@ namespace PragParking
                     ParkVehicle();
                     break;
                 case 2:
-                    CloseApplication();
-                    break;
-                case 3:
                     ShowP_Garage();
                     break;
+                case 3:
+                    CloseApplication();
+                    break;
                 default:
-                    Console.WriteLine("Enter valid number!");
+                    Console.WriteLine("Please, enter a valid number!");
                     Console.WriteLine("Press any button to continue (1)");
                     Console.ReadKey();
                     break;
@@ -117,7 +116,7 @@ namespace PragParking
                     CloseApplication();
                     break;
                 default:
-                    Console.WriteLine("Enter valid number!");
+                    Console.WriteLine("Please, enter a valid number!");
                     Console.WriteLine("Press any button to continue (2)");
                     Console.ReadKey();
                     TestSwitch3();
@@ -129,26 +128,29 @@ namespace PragParking
         #region UserInterface
         private static void TextStartMenu()
         {
-            Console.WriteLine("Welcome!");
+            Console.WriteLine("Welcome to park in PRAG!" +
+                              "\nPress 1 to park your vehicle" +
+                              "\nPress 2 to show available spots" +
+                              "\nPress 3 to exit the system");
         }
 
         private static void TextParkVehicle()
         {
 
-            Console.Write("Press 1 to park a car" +
-                        "\nPress 2 to park a motorcicle" +
-                        "\nPress 3 back to the main menu\n");
+            Console.Write("Press number 1 to park a car" +
+                        "\nPress number 2 to park a motorcicle" +
+                        "\nPress number 3 back to the main menu\n");
 
         }
 
         private static void TestTextMenu3()
         {
 
-            Console.Write("Press 1 to confirm the parking" +
-                        "\nPress 2 move the vehicle" +
-                        "\nPress 3 remove the vehicle" +
-                        "\nPress 4 to back to the previous menu" +
-                        "\nPress 5 to close the application");
+            Console.Write("Press number 1 to confirm the parking" +
+                        "\nPress number 2 move the vehicle" +
+                        "\nPress number 3 remove the vehicle" +
+                        "\nPress number 4 to back to the previous menu" +
+                        "\nPress number 5 to close the application");
         }
         #endregion
 
