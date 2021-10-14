@@ -11,9 +11,13 @@ namespace PragParking
         static string ParkedVehicles;
         static char vehicleType;
         static int P_Slot;
+        const int regLength = 10;
         static void Main(string[] args)
         {
             Initialize();
+            CanParkVehicle();
+
+            RunApplication();
 
             RunApplication();
 
@@ -260,17 +264,11 @@ namespace PragParking
         {
             for (int i = 1; i < P_Garage.Length; i++)
             {
-
                 ParkedVehicles = P_Garage[i];
-                if (ParkedVehicles == "")
-                {
-
-                }
-                else
+                if (ParkedVehicles != "")
                 {
                     Console.WriteLine(ParkedVehicles);
                 }
-
             }
             Console.ReadKey();
         }
@@ -327,7 +325,7 @@ namespace PragParking
             {
                 return false;
             }
-
+            
             if (vehicleType == 'C')
             {
                 P_Garage[parkingSpot] = vehicleType + "#" + regNumber;
@@ -347,8 +345,50 @@ namespace PragParking
             return true;
         }
 
-        #region MyRegion
+        public static void CanParkVehicle()
+        {
+            bool loopPark = true;
+            while (loopPark)
+            {
+                Console.Clear();
 
-        #endregion
+                Console.WriteLine("Enter vehicle type");
+                bool isCharValid = char.TryParse(Console.ReadLine().ToUpper(), out vehicleType);
+                if (isCharValid && vehicleType == 'C' || vehicleType == 'M')
+                {
+                    Console.WriteLine("Enter reg number");
+                    registrationNumber = Console.ReadLine().ToUpper();
+
+                    if (registrationNumber.Length <= regLength)
+                    {
+                        Console.WriteLine("Where should you park");
+                        bool isIntValid = int.TryParse(Console.ReadLine(), out P_Slot);
+                        if (CheckSpace(vehicleType, P_Slot))
+                        {
+                            ParkVehicle(vehicleType, registrationNumber, P_Slot);
+                            loopPark = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Occupied");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("To long regnumber max 10 char...");
+                        Console.ReadKey();
+                    }
+                    Console.WriteLine("Press any key to continue");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("Invailed typ");
+                    Console.WriteLine("Press any key to continue");
+                    Console.ReadKey();
+                }
+            }
+        }
+
     }
 }
