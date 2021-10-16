@@ -6,8 +6,8 @@ namespace PragParking
     {
         static bool varRunApplication = true;
         //static bool helpSearch = false;
-        static bool loopCanParkVehicle = true;
-        static string[] P_Garage = new string[101];
+        //static bool loopCanParkVehicle = true;
+        static string[] P_Garage = new string[21];
         static string registrationNumber;
         //static string availableP_slot;
         //static string ParkedVehicles;
@@ -31,7 +31,7 @@ namespace PragParking
             }
 
             // Sätt upp litet testdata
-            P_Garage[9] = "C#ABC123";   // Bil med regnummer ABC123
+            P_Garage[1] = "C#ABC123";   // Bil med regnummer ABC123
             P_Garage[2] = "C#CAR002";
             P_Garage[3] = "M#MC001";
             P_Garage[8] = "M#MC002|M#MC003";
@@ -55,8 +55,6 @@ namespace PragParking
         }
         #endregion
 
-        #region SelectOption
-
         private static void StartMenu()
         {
             Console.Clear();
@@ -67,13 +65,13 @@ namespace PragParking
             switch (userInput)
             {
                 case 1:
-                    ParkVehicle();
+                    ParkVehicleMenu();
                     break;
                 case 2:
-                    ShowGarage();
+                    ShowGarageMenu();
                     break;
                 case 3:
-                    MoveVehicle();
+                    MoveVehicleMenu();
                     break;
                 case 4:
                     CloseApplication();
@@ -84,47 +82,123 @@ namespace PragParking
             }
         }
 
-        #region Park
-        public static void ParkVehicle()
+        #region ParkVehicle
+        public static void ParkVehicleMenu()
         {
-            loopCanParkVehicle = true;
-            while (loopCanParkVehicle)
+            char fordonsTyp;
+            string registreringsNummer;
+            int parkingsRuta;
+            bool vTypeLoop = true, loopReg = true, loopPSpot = true;
+            while (vTypeLoop)
             {
                 Console.Clear();
-                Show();
+                ShowGarage();
 
                 Console.WriteLine("Enter vehicle type");
-                bool isCharValid = char.TryParse(Console.ReadLine().ToUpper(), out vehicleType);
-                if (isCharValid && vehicleType == 'C' || vehicleType == 'M')
+                bool isCharValid = char.TryParse(Console.ReadLine().ToUpper(), out fordonsTyp);
+                if (VehicleType(fordonsTyp, out fordonsTyp))
                 {
-                    Console.Clear();
-                    Show();
-
-                    Console.WriteLine("Enter reg number");
-                    registrationNumber = Console.ReadLine().ToUpper();
-
-                    if (registrationNumber.Length <= regLength)
+                    while (loopReg)
                     {
-                        SelectP_Slot();
-                    }
-                    else
-                    {
-                        Console.WriteLine("To long regnumber max 10 char...");
+                        ShowGarage();
+                        Console.WriteLine("Enter reg number");
+                        registreringsNummer = Console.ReadLine().ToUpper();
+                        if (EnterRegistrationNumber(registreringsNummer))
+                        {
+                            while (loopPSpot)
+                            {
+                                ShowGarage();
+                                Console.WriteLine("Where should you park");
+                                bool isIntValid = int.TryParse(Console.ReadLine(), out parkingsRuta);
+                                if (SelectParkingSlot(parkingsRuta, fordonsTyp))
+                                {
+                                    ShowGarage();
+                                    vTypeLoop = false;
+                                    loopReg = false;
+                                    loopPSpot = false;
+                                    Console.WriteLine("Can park here");
+                                    Console.ReadKey();
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Occupide");
+                                    Console.ReadKey();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("To long regnumber max 10 char...");
+                            Console.ReadKey();
+                        }
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Invailed typ");
+                    Console.WriteLine("Invalid input...Press any key to continue");
+                    Console.ReadKey();
                 }
-                Console.WriteLine("Press any key to continue");
-                Console.ReadKey();
             }
+        }
+        public static bool VehicleType(char VehicleType, out char FordonsTyp)
+        {
+            char _vehicleType = VehicleType;
+            if (_vehicleType == 'C')
+            {
+                FordonsTyp = 'C';
+                return true;
+            }
+            else if (_vehicleType == 'M')
+            {
+                FordonsTyp = 'M';
+                return true;
+            }
+            else
+            {
+                FordonsTyp = '?';
+                return false;
+            }
+        }
+        public static bool EnterRegistrationNumber(string RegistrationNumber)
+        {
+            string _registrationNumber = RegistrationNumber;
+            if (_registrationNumber.Length <= 10)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool SelectParkingSlot(int SelectParkingSlot, char VehicleType)
+        {
+            string availableSpot = P_Garage[SelectParkingSlot];
+            char _vehicleType = VehicleType;
+            if (availableSpot == "")
+            {
+                return true;
+            }
+            else if (_vehicleType == 'M' && availableSpot.Contains("M#") && !availableSpot.Contains("|"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static void ParkVehicle(char VehicleType, string RegistrationNumber, int SelectParkingSlot)
+        {
+            char _vehicleType = VehicleType;
+            string _registrationNumber = RegistrationNumber;
+            int _selectParkingSlot = SelectParkingSlot;
         }
         public static void SelectP_Slot()
         {
-            currentP_Slot = P_Slot;
+            //currentP_Slot = P_Slot;
             Console.Clear();
-            Show();
+            ShowGarage();
 
             Console.WriteLine("Where should you park");
             bool isIntValid = int.TryParse(Console.ReadLine(), out P_Slot);
@@ -132,7 +206,7 @@ namespace PragParking
             {
                 ParkVehicle(vehicleType, registrationNumber, P_Slot);
                 //P_Garage[P_Slot] = ""; // Hitta lösning för att remove vehicle
-                loopCanParkVehicle = false;
+                //loopCanParkVehicle = false;
                 Console.WriteLine("Vehicle is now parked");
             }
             else
@@ -154,8 +228,8 @@ namespace PragParking
                 return true;
             }
             return false;
-        }
-        public static bool ParkVehicle(char vehicleType, string regNumber, int parkingSpot)
+        } // == SelectParkinspot
+        public static bool ClaesParkVehicle(char vehicleType, string regNumber, int parkingSpot)
         {
             if (!CheckSpace(vehicleType, parkingSpot))
             {
@@ -164,7 +238,7 @@ namespace PragParking
 
             if (vehicleType == 'C')
             {
-                P_Garage[currentP_Slot] = "";// Kan ändras
+                //P_Garage[currentP_Slot] = "";// Kan ändras
                 P_Garage[parkingSpot] = vehicleType + "#" + regNumber;
             }
             if (vehicleType == 'M')
@@ -199,6 +273,8 @@ namespace PragParking
 
             return true;
         }
+
+
         #endregion
 
         #region MoveVehicle
@@ -208,12 +284,13 @@ namespace PragParking
             while (searchLoop)
             {
                 Console.Clear();
-                Show();
+                ShowGarage();
                 Console.WriteLine("Enter reg number");
                 registrationNumber = Console.ReadLine().ToUpper();
 
                 if (SearchRegNumber(registrationNumber, out P_Slot))
                 {
+                    currentP_Slot = P_Slot;
                     Console.WriteLine("Found");
                     Console.WriteLine("1.Move it\n2.Remove it");
                     bool isValidInput = int.TryParse(Console.ReadLine(), out int userInput);
@@ -240,7 +317,7 @@ namespace PragParking
                     while (loopUserInput)
                     {
                         Console.Clear();
-                        Show();
+                        ShowGarage();
 
                         Console.WriteLine("Not found");
                         Console.WriteLine("1.Try one more time\n2.Back");
@@ -286,15 +363,13 @@ namespace PragParking
             parkingSpot = -1;
             return false;
         }
-        private static void MoveVehicle()
+        private static void MoveVehicleMenu()
         {
-            Console.Clear();
-            Show();
-
             int switchInput;
-            // Text for option to vehicle
-            //Console.WriteLine("Enter registration number for the vehicle you want to move");
-            Console.WriteLine("1.Search for vehicle to move\n2.!Remove thisShow all parked Vehicle\n3Back");
+            Console.Clear();
+            ShowGarage();
+
+            Console.WriteLine("1.Enter registration number for the vehicle you want to move\n2.Back");
             bool isValid = int.TryParse(Console.ReadLine(), out switchInput);
             switch (switchInput)
             {
@@ -302,21 +377,19 @@ namespace PragParking
                     SearchVehicle();
                     break;
                 case 2:
-                    Console.WriteLine("Press any key to continue");
-                    Console.ReadKey();
-                    //MoveVehicle();
-                    break;
-                case 3:
                     StartMenu();
                     break;
                 default:
-                    DefaultOption();
-                    //TestSwitch3();
+                    Console.WriteLine("Invalid input...Press any key to continue");
+                    Console.ReadKey();
+                    MoveVehicleMenu();
                     break;
             }
         }
+        private static void MoveVehicle()
+        {
 
-        #endregion
+        }
 
         #endregion
 
@@ -381,36 +454,45 @@ namespace PragParking
 
         #endregion
 
-        public static void ShowGarage()
+        public static void ShowGarageMenu()
         {
             Console.Clear();
 
-            Show();
+            ShowGarage();
             Console.WriteLine();
             // Text for option to vehicle
             Console.WriteLine("1.Press any key to go back to meny");
             Console.ReadKey();
         }
-        private static void Show()
+        private static void ShowGarage()
         {
+            Console.Clear();
             Console.WriteLine("----------GARAGE----------\n");
-            int columns = 0; // const med //kod
+            int topColum = 0; // const med //kod
+            int bottomColum = 0;
+            int topNumber = 0;
             for (int i = 1; i < P_Garage.Length; i++)
             {
-
-                //Console.Write($"\t[{i}]:" + P_Garage[i].PadRight(20));
-                //if (i % columns == columns - 1)
-                //{
-                //    Console.WriteLine();
-                //}
-                if (columns == 6)
+                if (topColum % 11 == 0)
                 {
                     Console.WriteLine();
-                    columns = 0;
+                    topColum = 0;
+                    for (int j = 1; j < P_Garage.Length; j++)
+                    {
+                        topNumber++;
+                        Console.Write($"[{topNumber}]".ToString().PadRight(11));
+                        bottomColum++;
+                        if (bottomColum % 11 == 0)
+                        {
+                            //Console.WriteLine();
+                            bottomColum = 0;
+                            break;
+                        }
+                    }
                 }
-
-                Console.Write(string.Format("{0,8}", $"[{i}]{P_Garage[i].PadRight(25)} "));
-                columns++;
+                //Console.Write($"[{i}]{P_Garage[i]} ");
+                Console.Write(P_Garage[i].PadRight(10));
+                topColum++;
 
             }
             Console.WriteLine("\n----------GARAGE----------\n");
