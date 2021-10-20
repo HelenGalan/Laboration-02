@@ -9,8 +9,15 @@ namespace PragParking
         static void Main(string[] args)
         {
             Initialize();
+
+            RunApplication();                        
+        }
+
+        
+
             RunApplication();
         }
+
 
         #region Initialize
         static void Initialize()
@@ -65,7 +72,7 @@ namespace PragParking
                     break;
                 case 4:
                     CloseApplication();
-                    break;
+                    break;               
                 default:
                     DefaultOption();
                     break;
@@ -413,9 +420,11 @@ namespace PragParking
         private static void TextStartMenu()
         {
             Console.WriteLine("Welcome to park in PRAG!" +
+                              "\n" +
                               "\nPress 1 to park your vehicle" +
-                              "\nPress 2 to show available spots" +
-                              "\nPress 3 to exit the system");
+                              "\nPress 2 to show all spots" +
+                              "\nPress 3 to move your vehicle" +
+                              "\nPress 4 to exit the system");
         }
 
         private static void TextParkVehicle()
@@ -439,7 +448,8 @@ namespace PragParking
 
         private static void TextVehicleType()
         {
-            Console.WriteLine("Enter the vehicle type");
+            Console.WriteLine("Please, e" +
+                "nter the vehicle type");
         }
 
         private static void TextRegistrationNumber()
@@ -450,15 +460,23 @@ namespace PragParking
         {
             Console.WriteLine("Where should you park it?");
         }
-
         private static void TextAnyKey()
         {
             Console.WriteLine("Press any key to continue");
         }
-
         private static void TextOccupied()
         {
             Console.WriteLine("This spot is taken/occupied!");
+        }
+        private static void TextInvalidType()
+        {
+            Console.WriteLine("The type is invalid" +
+                "\n Please enter a valid type");
+        }
+        private static void TextToLongRegistration()
+        {
+            Console.WriteLine("The registration number is too long" +
+                "\nPlease, it has to be maximun 10 characteres");
         }
 
         #endregion
@@ -504,7 +522,7 @@ namespace PragParking
                     Console.WriteLine();
                     counter = 0;
                 }
-
+              
                 if (VehicleType == 'M')
                 {
                     if (!availableP_slot.Contains("|") && availableP_slot.Contains("M#") && availableP_slot != P_Garage[GamlaParkingsRuta])
