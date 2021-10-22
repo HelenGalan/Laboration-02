@@ -91,7 +91,70 @@ namespace PragParking
         }
         #endregion
 
-        
+        public static bool DeclareRegistrationNumber(out string registrationNumber)
+        {
+            while (true)
+            {
+                bool duplicate = false;
+                Console.Clear();
+                ShowAllParkedVehicle();
+
+                Console.WriteLine("Enter registration number...Max 10 char!");
+                string declareRegistrationNumber = Console.ReadLine().ToUpper();
+                for (int i = 1; i < P_Garage.Length; i++)
+                {
+                    if (declareRegistrationNumber == P_Garage[i])
+                    {
+                        duplicate = true;
+                        Console.WriteLine("A vehicle with that registration number already exits\nPress any key to continue");
+                        Console.ReadKey();
+                        break;
+                    }
+                    else if (P_Garage[i].StartsWith("CAR#") && declareRegistrationNumber == P_Garage[i].Substring(4))
+                    {
+                        duplicate = true;
+                        Console.WriteLine("A vehicle with that registration number already exits\nPress any key to continue");
+                        Console.ReadKey();
+                        break;
+                    }
+                    else if (P_Garage[i].StartsWith("MC#") && declareRegistrationNumber == P_Garage[i].Substring(3))
+                    {
+                        duplicate = true;
+                        Console.WriteLine("A vehicle with that registration number already exits\nPress any key to continue");
+                        Console.ReadKey();
+                        break;
+                    }
+                    else if (P_Garage[i].Contains("|"))
+                    {
+                        int divider = P_Garage[i].IndexOf("|");
+                        if (declareRegistrationNumber == P_Garage[i].Substring(3, divider - 3) || declareRegistrationNumber == P_Garage[i].Substring(0, divider)) //3 och -3 är till för att hamna rätt
+                        {
+                            duplicate = true;
+                            Console.WriteLine("A vehicle with that registration number already exits\nPress any key to continue");
+                            Console.ReadKey();
+                            break;
+                        }
+                        else if (declareRegistrationNumber == P_Garage[i].Substring(divider + 1) || declareRegistrationNumber == P_Garage[i].Substring(divider + 4))
+                        {
+                            duplicate = true;
+                            Console.WriteLine("A vehicle with that registration number already exits\nPress any key to continue");
+                            Console.ReadKey();
+                            break;
+                        }
+                    }
+                }
+                if (declareRegistrationNumber.Length > 10)
+                {
+                    Console.WriteLine("To long...Press any key to continue");
+                    Console.ReadKey();
+                }
+                else if (!duplicate)
+                {
+                    registrationNumber = declareRegistrationNumber;
+                    return true;
+                }
+            }
+        }
 
         #region SearchVehicle
         public static void SearchVehicleMenu()
