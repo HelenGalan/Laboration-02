@@ -62,7 +62,7 @@ namespace PragParking
 
             Console.WriteLine("Welcome\n1.Park vehicle\n2.Search vehicle\n3.Show all Parked vehicle\n4.Close application");
             bool isValid = int.TryParse(Console.ReadLine(), out userInput);
-            if (!isValid || userInput != 1 && userInput != 2 && userInput != 3)
+            if (!isValid || userInput != 1 && userInput != 2 && userInput != 3 && userInput != 4)
             {
                 Console.WriteLine("Invalid input...Press any key to continue");
                 Console.ReadKey();
@@ -131,7 +131,67 @@ namespace PragParking
         }
         public static bool DeclareRegistrationNumber(out string registrationNumber)
         {
+            while (true)
+            {
+                bool duplicate = false;
+                Console.Clear();
+                ShowAllParkedVehicle();
 
+                Console.WriteLine("Enter registration number...Max 10 char!");
+                string declareRegistrationNumber = Console.ReadLine().ToUpper();
+                for (int i = 1; i < P_Garage.Length; i++)
+                {
+                    if (declareRegistrationNumber == P_Garage[i])
+                    {
+                        duplicate = true;
+                        Console.WriteLine("A vehicle with that registration number already exits\nPress any key to continue");
+                        Console.ReadKey();
+                        break;
+                    }
+                    else if (P_Garage[i].StartsWith("CAR#") && declareRegistrationNumber == P_Garage[i].Substring(4))
+                    {
+                        duplicate = true;
+                        Console.WriteLine("A vehicle with that registration number already exits\nPress any key to continue");
+                        Console.ReadKey();
+                        break;
+                    }
+                    else if (P_Garage[i].StartsWith("MC#") && declareRegistrationNumber == P_Garage[i].Substring(3))
+                    {
+                        duplicate = true;
+                        Console.WriteLine("A vehicle with that registration number already exits\nPress any key to continue");
+                        Console.ReadKey();
+                        break;
+                    }
+                    else if (P_Garage[i].Contains("|"))
+                    {
+                        int divider = P_Garage[i].IndexOf("|");
+                        if (declareRegistrationNumber == P_Garage[i].Substring(3, divider - 3) || declareRegistrationNumber == P_Garage[i].Substring(0, divider)) //3 och -3 är till för att hamna rätt
+                        {
+                            duplicate = true;
+                            Console.WriteLine("A vehicle with that registration number already exits\nPress any key to continue");
+                            Console.ReadKey();
+                            break;
+                        }
+                        else if (declareRegistrationNumber == P_Garage[i].Substring(divider + 1) || declareRegistrationNumber == P_Garage[i].Substring(divider + 4))
+                        {
+                            duplicate = true;
+                            Console.WriteLine("A vehicle with that registration number already exits\nPress any key to continue");
+                            Console.ReadKey();
+                            break;
+                        }
+                    }
+                }
+                if (declareRegistrationNumber.Length > 10)
+                {
+                    Console.WriteLine("To long...Press any key to continue");
+                    Console.ReadKey();
+                }
+                else if (!duplicate)
+                {
+                    registrationNumber = declareRegistrationNumber;
+                    return true;
+                }
+            }
         }
         private static bool DeclareParkingSpace(string vehicleType, out int parkingSpace)
         {
@@ -179,7 +239,7 @@ namespace PragParking
                 P_Garage[parkingSpace] = vehicleType + registrationNumber;
                 return true;
             }
-            else if (vehicleType == "MC#" %% availableSpace.Contains("MC#") && !availableSpace.Contains("|"))
+            else if (vehicleType == "MC#" && availableSpace.Contains("MC#") && !availableSpace.Contains("|"))
             {
                 P_Garage[parkingSpace] = string.Join("|", P_Garage[parkingSpace], vehicleType + registrationNumber);
                 return true;
@@ -198,7 +258,7 @@ namespace PragParking
 
         }
 
-       
+
         #endregion
 
 
