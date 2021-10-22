@@ -91,7 +91,112 @@ namespace PragParking
         }
         #endregion
 
-        
+        #region ParkVehicle
+
+        public static void ParkVehicleMenu()
+        {
+            DeclareVehicleType(out string vehicleType);
+            DeclareRegistrationNumber(out string registrationNumber);
+            DeclareParkingSpace(vehicleType, out int parkingSpace);
+            ParkVehicle(vehicleType, registrationNumber, parkingSpace);
+            EndMessage(registrationNumber, parkingSpace);
+
+        }
+        public static bool DeclareVehicleType(out string vehicleType)
+        {
+            while (true)
+            {
+                Console.Clear();
+                ShowAllParkedVehicle();
+                Console.WriteLine("Enter the vehicle type\n(C) = Car\n(M) = Motorcycle");
+                _ = char.TryParse(Console.ReadLine().ToUpper(), out char declareType);
+                if (declareType == 'C')
+                {
+                    vehicleType = "CAR#";
+                    return true;
+                }
+                else if (declareType == 'M')
+                {
+                    vehicleType = "MC#";
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input! Press any key to continue.");
+                    Console.ReadKey();
+                }
+            }
+
+        }
+        public static bool DeclareRegistrationNumber(out string registrationNumber)
+        {
+
+        }
+        private static bool DeclareParkingSpace(string vehicleType, out int parkingSpace)
+        {
+            while (true)
+            {
+                ShowAvailableP_slots(vehicleType, 0);
+                Console.WriteLine("Where do you want to park your vehicle?");
+                bool isValidNumber = int.TryParse(Console.ReadLine(), out int declaredParkingSpace);
+
+                if (!isValidNumber)
+                {
+                    Console.WriteLine("Invalid input! Press any key to continue.");
+                    Console.ReadKey();
+                }
+                else if (declaredParkingSpace < 1 || declaredParkingSpace > 100)
+                {
+                    Console.WriteLine("Please insert a number between 1 to 100\nPress any key to continue.");
+                    Console.ReadKey();
+                }
+                else if (vehicleType == "CAR#" && P_Garage[declaredParkingSpace] != "")
+                {
+                    Console.WriteLine($"Parking the vehicle at space {declaredParkingSpace} is not possible.\nPress any key to continue.");
+                    Console.ReadKey();
+                }
+                else if (vehicleType == "MC#" && P_Garage[declaredParkingSpace].Contains("|") || P_Garage[declaredParkingSpace].Contains("CAR#"))
+                {
+                    Console.WriteLine($"Parking the vehicle at space {declaredParkingSpace} is not possible.\nPress any key to continue.");
+                    Console.ReadKey();
+                }
+                else if (declaredParkingSpace > 0 && declaredParkingSpace < 101)
+                {
+                    parkingSpace = declaredParkingSpace;
+                    return true;
+                }
+            }
+        }
+        public static bool ParkVehicle(string vehicleType, string registrationNumber, int parkingSpace)
+        {
+            string availableSpace = P_Garage[parkingSpace];
+
+            if (availableSpace == "")
+            {
+                P_Garage[parkingSpace] = vehicleType + registrationNumber;
+                return true;
+            }
+            else if (vehicleType == "MC#" %% availableSpace.Contains("MC#") && !availableSpace.Contains("|"))
+            {
+                P_Garage[parkingSpace] = string.Join("|", P_Garage[parkingSpace], vehicleType + registrationNumber);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static void EndMessage(string registrationNumber, int parkingSpace)
+        {
+            ShowAllParkedVehicle();
+            Console.WriteLine($"Vehicle {registrationNumber} is now parked at parking space {parkingSpace}.\nPress any key to continue.");
+            Console.ReadKey();
+
+        }
+
+       
+        #endregion
 
         #region SearchVehicle
         public static void SearchVehicleMenu()
