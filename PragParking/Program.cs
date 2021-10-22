@@ -96,7 +96,7 @@ namespace PragParking
         public static void ParkVehicleMenu()
         {
             DeclareVehicleType(out string vehicleType);
-            DeclareRegistrationNumber(out string registrationNumber);
+            
             DeclareParkingSpace(vehicleType, out int parkingSpace);
             ParkVehicle(vehicleType, registrationNumber, parkingSpace);
             EndMessage(registrationNumber, parkingSpace);
@@ -128,10 +128,7 @@ namespace PragParking
             }
 
         }
-        public static bool DeclareRegistrationNumber(out string registrationNumber)
-        {
-
-        }
+      
         private static bool DeclareParkingSpace(string vehicleType, out int parkingSpace)
         {
             while (true)
@@ -176,7 +173,7 @@ namespace PragParking
                 P_Garage[parkingSpace] = vehicleType + registrationNumber;
                 return true;
             }
-            else if (vehicleType == "MC#" %% availableSpace.Contains("MC#") && !availableSpace.Contains("|"))
+            else if (vehicleType == "MC#" && availableSpace.Contains("MC#") && !availableSpace.Contains("|"))
             {
                 P_Garage[parkingSpace] = string.Join("|", P_Garage[parkingSpace], vehicleType + registrationNumber);
                 return true;
