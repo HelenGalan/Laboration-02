@@ -91,6 +91,7 @@ namespace PragParking
         }
         #endregion
 
+
         #region ParkVehicle
 
         public static void ParkVehicleMenu()
@@ -160,10 +161,12 @@ namespace PragParking
                 else if (declaredParkingSpace > 0 && declaredParkingSpace < 101)
                 {
                     parkingSpace = declaredParkingSpace;
+
                     return true;
                 }
             }
         }
+
         public static bool ParkVehicle(string vehicleType, string registrationNumber, int parkingSpace)
         {
             string availableSpace = P_Garage[parkingSpace];
@@ -194,6 +197,8 @@ namespace PragParking
 
        
         #endregion
+
+
 
         #region SearchVehicle
         public static void SearchVehicleMenu()
